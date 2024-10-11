@@ -1,6 +1,6 @@
+from queue import Queue
 import wikipediaapi
 import time
-import queue as Queue
 
 user_agent = "wiki-project (pohidt@outlook.com)"
 wiki = wikipediaapi.Wikipedia(user_agent, "en")
@@ -18,16 +18,19 @@ def wikipedia_solver(start_page, target_page):
     print("loading, pease wait")
     start_time = time.time()
 
-    visited = set()
     queue = Queue()
+    visited = set()
     parent = {}
+
+    queue.put(start_page.title)
+    visited.add(start_page.title)
 
     while not queue.empty():
         current_page_title = queue.get()
-        if current_page_title == target_page_title:
+        if current_page_title == target_page.title:
             break
 
-        current_page = wiki.page(correct_page_title)
+        current_page = wiki.page(current_page_title)
         links = fetch_links(current_page)
 
         for link in links:
